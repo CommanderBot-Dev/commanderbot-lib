@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "commanderbot-lib"
-version = "0.1.0"
+version = "0.2.0"
 description = "A library of utilities for discord.py bots."
 authors = ["Arcensoth <arcensoth@gmail.com>"]
 license = "MIT"
@@ -11,7 +11,7 @@ keywords = ['discord', 'bot']
 
 [tool.poetry.dependencies]
 python = "^3.8"
-"discord.py" = "^1.4.1"
+"discord.py" = "^1.5.0"
 colorama = {version = "^0.4.3", optional = true}
 colorlog = {version = "^4.2.1", optional = true}
 pyyaml = {version = "^5.3.1", optional = true}
