@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Implemented `VersionedCachedStore` which uses a `VersionedFileDatabase` to persist simple, versioned data
+  - This can be used by extensions to maintain a simple, versioned file-based database in a standard, consistent manner
+  - Current supported implementations of `VersionedFileDatabase` include `JsonVersionedFileDatabase` for JSON files and `YamlVersionedFileDatabase` for YAML files
+
 ## [0.2.0] - 2020-09-29
 
 ### Changed

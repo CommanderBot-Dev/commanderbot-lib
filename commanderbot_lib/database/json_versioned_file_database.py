@@ -1,10 +1,10 @@
 from typing import IO
 
-from commanderbot_lib.database.abc.file_database import FileDatabase
+from commanderbot_lib.database.abc.versioned_file_database import VersionedFileDatabase
 from commanderbot_lib.database.mixins.json_file_database_mixin import JsonFileDatabaseMixin
 
 
-class JsonFileDatabase(FileDatabase, JsonFileDatabaseMixin):
+class JsonVersionedFileDatabase(VersionedFileDatabase, JsonFileDatabaseMixin):
     # @implements FileDatabase
     async def load(self, file: IO) -> dict:
         return await self.load_json(file)
