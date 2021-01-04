@@ -1,11 +1,15 @@
 from abc import abstractmethod
+from datetime import datetime
 from os import PathLike
 from pathlib import Path
+from shutil import copyfile
 from typing import IO
 
 from commanderbot_lib.database.abc.dict_database import DictDatabase
 from commanderbot_lib.utils import fix_path
 from discord.ext.commands import Bot, Cog
+
+BACKUP_TIMESTAMP_FORMAT = "%Y-%m-%d-%H-%M-%S-%f"
 
 
 class FileDatabase(DictDatabase):
@@ -51,6 +55,15 @@ class FileDatabase(DictDatabase):
     async def write(self, data: dict):
         """ Default implementation that simply writes the entire file as data. """
         await self._write_file(data)
+
+    async def backup(self):
+        """ Default implementation that simply copies the existing database file. """
+        timestamp = datetime.utcnow().strftime(BACKUP_TIMESTAMP_FORMAT)
+        source_path = self._path
+        backup_path = self._path.with_suffix(f".backup.{timestamp}{self._path.suffix}")
+        self._log.warning(f'Backing up database from "{source_path}" to "{backup_path}>"')
+        # TODO Use async file I/O. #enhance #async-files
+        copyfile(source_path, backup_path)
 
     async def _read_file(self) -> dict:
         self._log.info(f"Loading database from file: {self._path}")

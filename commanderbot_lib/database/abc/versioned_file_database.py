@@ -76,6 +76,8 @@ class VersionedFileDatabase(FileDatabase):
             self._log.warning(f"Data is unversioned! Assuming expected version: {self.version}")
             actual_version = self.version
             actual_data = wrapper_data
+            # Create a backup of the old data just in case.
+            await self.backup()
             # Immediately write the version back to file.
             await self.write(actual_data)
         # Attempt to migrate the data from one version to another, if necessary.
@@ -91,6 +93,8 @@ class VersionedFileDatabase(FileDatabase):
                         await migration(self, actual_data)
             except Exception as ex:
                 raise FailedMigrationError(self.version, actual_version) from ex
+            # Create a backup of the old data just in case.
+            await self.backup()
             # Immediately write the migrated data back to file.
             await self.write(actual_data)
             self._log.warning(f"Data migration complete!")
