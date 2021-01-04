@@ -9,8 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 
 - Implemented file database backups for `FileDatabase` implementations
-  - The backup file will use the original name with a microsecond-accurate timestamp inserted before the file extension
-  - `VersionedFileDatabase` now creates a backup copy of the database file before applying any writing-back any changes
+  - The backup file will use the original file name with a microsecond-accurate timestamp inserted before the file extension
+  - `VersionedFileDatabase` now creates a backup copy of the database file before writing-back any changes
 
 ## [0.5.0] - 2021-01-03
 
