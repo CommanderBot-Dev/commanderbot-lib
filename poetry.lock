@@ -203,11 +203,11 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [extras]
-log-colors = ["colorama", "colorlog"]
+colors = ["colorama", "colorlog"]
 yaml = ["pyyaml"]
 
 [metadata]
-content-hash = "cfc2f45c4099b5702564917811ad489157f42ba717aba59742a86f1496258ee7"
+content-hash = "1c8cd65a62d75d12f31e55d4d05c3f5ce01c9aedbadaafffe28a082ad0e7cd18"
 lock-version = "1.0"
 python-versions = "^3.8"
 
