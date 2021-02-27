@@ -1,14 +1,15 @@
 from datetime import datetime
 from typing import Generic, TypeVar
 
+from discord import Guild, Member, Message, Reaction
+from discord.abc import Messageable
+from discord.ext.commands import Bot, Cog
+
 from commanderbot_lib.logging import Logger, get_clogger
 from commanderbot_lib.mixins.async_init_mixin import AsyncInitMixin
 from commanderbot_lib.options.abc.cog_options import CogOptions
 from commanderbot_lib.store.abc.cog_store import CogStore
 from commanderbot_lib.types import MemberOrUser
-from discord import Guild, Member, Message, Reaction
-from discord.abc import Messageable
-from discord.ext.commands import Bot, Cog
 
 OptionsType = TypeVar("OptionsType", bound=CogOptions)
 StoreType = TypeVar("StoreType", bound=CogStore)
@@ -34,7 +35,9 @@ class CogGuildState(AsyncInitMixin, Generic[OptionsType, StoreType]):
         The store being used to manage data.
     """
 
-    def __init__(self, bot: Bot, cog: Cog, options: OptionsType, guild: Guild, store: StoreType):
+    def __init__(
+        self, bot: Bot, cog: Cog, options: OptionsType, guild: Guild, store: StoreType
+    ):
         self.bot: Bot = bot
         self.cog: Cog = cog
         self.options: OptionsType = options

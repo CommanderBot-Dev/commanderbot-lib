@@ -1,9 +1,13 @@
 from abc import abstractmethod
 from typing import Generic, TypeVar
 
+from discord.ext.commands import Bot, Cog
+
 from commanderbot_lib.database.abc.dict_database import DictDatabase
 from commanderbot_lib.database.abc.file_database import FileDatabase
-from commanderbot_lib.database.abc.read_only_remote_file_database import ReadOnlyRemoteFileDatabase
+from commanderbot_lib.database.abc.read_only_remote_file_database import (
+    ReadOnlyRemoteFileDatabase,
+)
 from commanderbot_lib.database.in_memory_dict_database import InMemoryDictDatabase
 from commanderbot_lib.database.json_file_database import JsonFileDatabase
 from commanderbot_lib.database.json_read_only_remote_file_database import (
@@ -15,7 +19,6 @@ from commanderbot_lib.database.yaml_read_only_remote_file_database import (
 )
 from commanderbot_lib.options.abc.options_with_database import OptionsWithDatabase
 from commanderbot_lib.store.abc.cog_store import CogStore
-from discord.ext.commands import Bot, Cog
 
 OptionsType = TypeVar("OptionsType", bound=OptionsWithDatabase)
 DatabaseType = TypeVar("DatabaseType", bound=DictDatabase)
@@ -75,7 +78,9 @@ class CachedStore(
         self._cache = await self._build_cache(initial_data)
 
     async def _make_in_memory_database(self, data: dict) -> InMemoryDictDatabase:
-        self._log.info(f"Creating an in-memory database with {len(data)} key(s) of initial data")
+        self._log.info(
+            f"Creating an in-memory database with {len(data)} key(s) of initial data"
+        )
         return InMemoryDictDatabase(self.bot, self.cog, data=data)
 
     async def _make_file_database(self, location: str) -> FileDatabase:
@@ -85,14 +90,20 @@ class CachedStore(
         # If the location is any other string, assume it is a file path and use a local file database.
         return await self._make_local_file_database(location)
 
-    async def _make_remote_file_database(self, location: str) -> ReadOnlyRemoteFileDatabase:
+    async def _make_remote_file_database(
+        self, location: str
+    ) -> ReadOnlyRemoteFileDatabase:
         # JSON
         if location.endswith(".json"):
-            self._log.info(f"Creating a remote JSON file database using the file at: {location}")
+            self._log.info(
+                f"Creating a remote JSON file database using the file at: {location}"
+            )
             return JsonReadOnlyRemoteFileDatabase(self.bot, self.cog, address=location)
         # YAML
         elif location.endswith((".yaml", ".yml")):
-            self._log.info(f"Creating a remote file database using the file at: {location}")
+            self._log.info(
+                f"Creating a remote file database using the file at: {location}"
+            )
             return YamlReadOnlyRemoteFileDatabase(self.bot, self.cog, address=location)
         # Anything else is unsupported.
         else:
@@ -103,11 +114,15 @@ class CachedStore(
     async def _make_local_file_database(self, location: str) -> FileDatabase:
         # JSON
         if location.endswith(".json"):
-            self._log.info(f"Creating a JSON file database using the file at: {location}")
+            self._log.info(
+                f"Creating a JSON file database using the file at: {location}"
+            )
             return JsonFileDatabase(self.bot, self.cog, path=location)
         # YAML
         elif location.endswith((".yaml", ".yml")):
-            self._log.info(f"Creating a YAML file database using the file at: {location}")
+            self._log.info(
+                f"Creating a YAML file database using the file at: {location}"
+            )
             return YamlFileDatabase(self.bot, self.cog, path=location)
         # Anything else is unsupported.
         else:

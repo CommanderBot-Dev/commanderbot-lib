@@ -1,6 +1,7 @@
+from discord.ext.commands import Bot, Cog
+
 from commanderbot_lib.logging import Logger, get_clogger
 from commanderbot_lib.mixins.async_init_mixin import AsyncInitMixin
-from discord.ext.commands import Bot, Cog
 
 
 class CogDatabase(AsyncInitMixin):

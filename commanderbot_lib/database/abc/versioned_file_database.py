@@ -1,11 +1,14 @@
 from os import PathLike
 from typing import Callable, Iterable
 
-from commanderbot_lib.database.abc.file_database import FileDatabase
 from discord.ext.commands import Bot, Cog
 
+from commanderbot_lib.database.abc.file_database import FileDatabase
+
 DataMigration = Callable[["VersionedFileDatabase", dict], None]
-DataMigrationCollector = Callable[["VersionedFileDatabase", int, int], Iterable[DataMigration]]
+DataMigrationCollector = Callable[
+    ["VersionedFileDatabase", int, int], Iterable[DataMigration]
+]
 
 
 class BackwardsMigrationError(Exception):
@@ -73,7 +76,9 @@ class VersionedFileDatabase(FileDatabase):
         # If no version is defined, assume the entire file is data of the expected version. This is
         # for the convenience of migrating from unversioned data.
         if actual_version is None:
-            self._log.warning(f"Data is unversioned! Assuming expected version: {self.version}")
+            self._log.warning(
+                f"Data is unversioned! Assuming expected version: {self.version}"
+            )
             actual_version = self.version
             actual_data = wrapper_data
             # Create a backup of the old data just in case.
@@ -82,7 +87,9 @@ class VersionedFileDatabase(FileDatabase):
             await self.write(actual_data)
         # Attempt to migrate the data from one version to another, if necessary.
         elif actual_version < self.version:
-            self._log.warning(f"Migrating data from version {actual_version} to {self.version}...")
+            self._log.warning(
+                f"Migrating data from version {actual_version} to {self.version}..."
+            )
             # Collect and apply migrations, in order.
             try:
                 migrations = list(self._migrate(self, actual_version, self.version))

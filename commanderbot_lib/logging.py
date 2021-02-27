@@ -39,7 +39,9 @@ def setup_logging(
     log_handler = logging.StreamHandler()
 
     try:
-        log_handler.setFormatter(colorlog.ColoredFormatter(fmt=log_format, log_colors=log_colors))
+        log_handler.setFormatter(
+            colorlog.ColoredFormatter(fmt=log_format, log_colors=log_colors)
+        )
     except:
         print(
             "Terminal colors (via colorama and/or colorlog) are unavailable; using basic logging instead."

@@ -2,8 +2,6 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Type, Union
 
-from commanderbot_lib.bot.abc.commander_bot_base import CommanderBotBase
-from commanderbot_lib.logging import get_logger
 from discord.ext.commands import Cog, Context
 from discord.ext.commands.errors import (
     BadArgument,
@@ -13,6 +11,9 @@ from discord.ext.commands.errors import (
     MissingRequiredArgument,
     TooManyArguments,
 )
+
+from commanderbot_lib.bot.abc.commander_bot_base import CommanderBotBase
+from commanderbot_lib.logging import get_logger
 
 
 @dataclass
@@ -90,7 +91,9 @@ class CommanderBot(CommanderBotBase):
         elif isinstance(ex, BotMissingPermissions):
             return await self._respond_to_bot_permission_error(ctx, ex)
 
-    async def _respond_to_user_input_error(self, ctx: Context, ex: Exception) -> Optional[bool]:
+    async def _respond_to_user_input_error(
+        self, ctx: Context, ex: Exception
+    ) -> Optional[bool]:
         await ctx.send(f"Bad input: {ex}")
         await ctx.send_help(ctx.command)
         return True
@@ -101,7 +104,9 @@ class CommanderBot(CommanderBotBase):
         await ctx.send(f"You do not have permission to run this command.")
         return True
 
-    async def _respond_to_bot_permission_error(self, ctx: Context, ex: Exception) -> Optional[bool]:
+    async def _respond_to_bot_permission_error(
+        self, ctx: Context, ex: Exception
+    ) -> Optional[bool]:
         await ctx.send(f"I do not have permission to run this command.")
         return True
 

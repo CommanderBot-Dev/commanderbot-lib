@@ -1,16 +1,21 @@
 from abc import abstractmethod
 from typing import Generic, Iterable, TypeVar
 
+from discord.ext.commands import Bot, Cog
+
 from commanderbot_lib.database.abc.dict_database import DictDatabase
 from commanderbot_lib.database.abc.versioned_file_database import (
     DataMigration,
     VersionedFileDatabase,
 )
-from commanderbot_lib.database.json_versioned_file_database import JsonVersionedFileDatabase
-from commanderbot_lib.database.yaml_versioned_file_database import YamlVersionedFileDatabase
+from commanderbot_lib.database.json_versioned_file_database import (
+    JsonVersionedFileDatabase,
+)
+from commanderbot_lib.database.yaml_versioned_file_database import (
+    YamlVersionedFileDatabase,
+)
 from commanderbot_lib.options.abc.options_with_database import OptionsWithDatabase
 from commanderbot_lib.store.abc.cached_store import CachedStore
-from discord.ext.commands import Bot, Cog
 
 OptionsType = TypeVar("OptionsType", bound=OptionsWithDatabase)
 DatabaseType = TypeVar("DatabaseType", bound=DictDatabase)
@@ -18,7 +23,8 @@ CacheType = TypeVar("CacheType")
 
 
 class VersionedCachedStore(
-    CachedStore[OptionsType, DatabaseType, CacheType], Generic[OptionsType, DatabaseType, CacheType]
+    CachedStore[OptionsType, DatabaseType, CacheType],
+    Generic[OptionsType, DatabaseType, CacheType],
 ):
     """
     A variant of `CachedStore` that expects the underlying database to be versioned.
@@ -51,10 +57,14 @@ class VersionedCachedStore(
             f"Invalid database definition for cog <{self.cog.qualified_name}>: {db_options}"
         )
 
-    async def _make_versioned_file_database(self, location: str) -> VersionedFileDatabase:
+    async def _make_versioned_file_database(
+        self, location: str
+    ) -> VersionedFileDatabase:
         # JSON
         if location.endswith(".json"):
-            self._log.info(f"Creating a versioned JSON file database using the file at: {location}")
+            self._log.info(
+                f"Creating a versioned JSON file database using the file at: {location}"
+            )
             return JsonVersionedFileDatabase(
                 self.bot,
                 self.cog,
@@ -64,7 +74,9 @@ class VersionedCachedStore(
             )
         # YAML
         elif location.endswith((".yaml", ".yml")):
-            self._log.info(f"Creating a versioned YAML file database using the file at: {location}")
+            self._log.info(
+                f"Creating a versioned YAML file database using the file at: {location}"
+            )
             return YamlVersionedFileDatabase(
                 self.bot,
                 self.cog,

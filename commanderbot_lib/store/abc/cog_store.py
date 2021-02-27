@@ -1,11 +1,12 @@
 from abc import abstractmethod
 from typing import Generic, TypeVar
 
+from discord.ext.commands import Bot, Cog
+
 from commanderbot_lib.database.abc.cog_database import CogDatabase
 from commanderbot_lib.logging import Logger, get_clogger
 from commanderbot_lib.mixins.async_init_mixin import AsyncInitMixin
 from commanderbot_lib.options.abc.cog_options import CogOptions
-from discord.ext.commands import Bot, Cog
 
 OptionsType = TypeVar("OptionsType", bound=CogOptions)
 DatabaseType = TypeVar("DatabaseType", bound=CogDatabase)

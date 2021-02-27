@@ -5,9 +5,10 @@ from pathlib import Path
 from shutil import copyfile
 from typing import IO
 
+from discord.ext.commands import Bot, Cog
+
 from commanderbot_lib.database.abc.dict_database import DictDatabase
 from commanderbot_lib.utils import fix_path
-from discord.ext.commands import Bot, Cog
 
 BACKUP_TIMESTAMP_FORMAT = "%Y-%m-%d-%H-%M-%S-%f"
 
@@ -61,7 +62,9 @@ class FileDatabase(DictDatabase):
         timestamp = datetime.utcnow().strftime(BACKUP_TIMESTAMP_FORMAT)
         source_path = self._path
         backup_path = self._path.with_suffix(f".backup.{timestamp}{self._path.suffix}")
-        self._log.warning(f'Backing up database from "{source_path}" to "{backup_path}>"')
+        self._log.warning(
+            f'Backing up database from "{source_path}" to "{backup_path}>"'
+        )
         # TODO Use async file I/O. #enhance #async-files
         copyfile(source_path, backup_path)
 

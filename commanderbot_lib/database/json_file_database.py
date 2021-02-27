@@ -1,7 +1,9 @@
 from typing import IO
 
 from commanderbot_lib.database.abc.file_database import FileDatabase
-from commanderbot_lib.database.mixins.json_file_database_mixin import JsonFileDatabaseMixin
+from commanderbot_lib.database.mixins.json_file_database_mixin import (
+    JsonFileDatabaseMixin,
+)
 
 
 class JsonFileDatabase(FileDatabase, JsonFileDatabaseMixin):

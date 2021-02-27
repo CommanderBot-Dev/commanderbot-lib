@@ -1,7 +1,9 @@
 from typing import IO
 
 from commanderbot_lib.database.abc.versioned_file_database import VersionedFileDatabase
-from commanderbot_lib.database.mixins.yaml_file_database_mixin import YamlFileDatabaseMixin
+from commanderbot_lib.database.mixins.yaml_file_database_mixin import (
+    YamlFileDatabaseMixin,
+)
 
 
 class YamlVersionedFileDatabase(VersionedFileDatabase, YamlFileDatabaseMixin):
