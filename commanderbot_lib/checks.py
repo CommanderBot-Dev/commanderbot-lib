@@ -1,6 +1,6 @@
 from discord.ext import commands
 
-# NOTE See: https://discordpy.readthedocs.io/en/v1.4.1/ext/commands/api.html#checks
+# NOTE See: https://discordpy.readthedocs.io/en/latest/ext/commands/commands.html#checks
 
 
 def has_guild_permissions(**perms):
@@ -16,3 +16,7 @@ def has_guild_permissions(**perms):
 
 def is_administrator():
     return has_guild_permissions(administrator=True)
+
+
+def guild_only():
+    return commands.guild_only()
