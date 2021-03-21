@@ -6,9 +6,11 @@ from discord.ext.commands import Cog, Context
 from discord.ext.commands.errors import (
     BadArgument,
     BotMissingPermissions,
+    CheckFailure,
     CommandNotFound,
     MissingPermissions,
     MissingRequiredArgument,
+    NoPrivateMessage,
     TooManyArguments,
 )
 
@@ -81,35 +83,6 @@ class CommanderBot(CommanderBotBase):
 
         self.log.info(f"Finished loading extensions.")
 
-    async def _respond_to_error(self, ctx: Context, ex: Exception) -> Optional[bool]:
-        if isinstance(ex, CommandNotFound):
-            return True
-        elif isinstance(ex, (MissingRequiredArgument, TooManyArguments, BadArgument)):
-            return await self._respond_to_user_input_error(ctx, ex)
-        elif isinstance(ex, MissingPermissions):
-            return await self._respond_to_user_permission_error(ctx, ex)
-        elif isinstance(ex, BotMissingPermissions):
-            return await self._respond_to_bot_permission_error(ctx, ex)
-
-    async def _respond_to_user_input_error(
-        self, ctx: Context, ex: Exception
-    ) -> Optional[bool]:
-        await ctx.send(f"Bad input: {ex}")
-        await ctx.send_help(ctx.command)
-        return True
-
-    async def _respond_to_user_permission_error(
-        self, ctx: Context, ex: Exception
-    ) -> Optional[bool]:
-        await ctx.send(f"You do not have permission to run this command.")
-        return True
-
-    async def _respond_to_bot_permission_error(
-        self, ctx: Context, ex: Exception
-    ) -> Optional[bool]:
-        await ctx.send(f"I do not have permission to run this command.")
-        return True
-
     # @implements CommanderBotBase
     @property
     def started_at(self) -> datetime:
@@ -143,8 +116,22 @@ class CommanderBot(CommanderBotBase):
 
     # @overrides Bot
     async def on_command_error(self, ctx: Context, ex: Exception):
-        if not await self._respond_to_error(ctx, ex):
+        if isinstance(ex, CommandNotFound):
+            pass
+        elif isinstance(ex, (MissingRequiredArgument, TooManyArguments, BadArgument)):
+            await ctx.reply(f"🤢 Bad input: {ex}")
+            await ctx.send_help(ctx.command)
+        elif isinstance(ex, MissingPermissions):
+            await ctx.reply(f"😠 You don't have permission to do that.")
+        elif isinstance(ex, BotMissingPermissions):
+            await ctx.reply(f"😳 I don't have permission to do that.")
+        elif isinstance(ex, NoPrivateMessage):
+            await ctx.reply(f"🤐 You can't do that in a private message.")
+        elif isinstance(ex, CheckFailure):
+            await ctx.reply(f"🤔 You can't do that.")
+        else:
             try:
                 raise ex
             except:
-                self.log.exception(f"Ignoring exception in command <{ctx.command}>:")
+                self.log.exception(f"Ignoring exception in command: {ctx.command}")
+            await ctx.reply(f"🔥 Something went wrong trying to do that.")
